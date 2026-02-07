@@ -7,6 +7,7 @@ const PORT = Number(process.env.PORT || 8000);
 const HOST = process.env.HOST || "0.0.0.0";
 
 const app = express();
+// Replaced standalone app.listen() with explicit HTTP server creation, integrated WebSocket server attachment, stored broadcast function on app.locals, updated startup logging for HTTP and WebSocket URLs, and added ws@^8.19.0 dependency.
 const server = http.createServer(app);
 
 app.use(express.json());

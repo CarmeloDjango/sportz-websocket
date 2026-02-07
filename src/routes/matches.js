@@ -69,6 +69,7 @@ matchRouter.post("/", async (req, res) => {
       })
       .returning();
 
+    // When a match is created, all connected clients receive an instant notification
     if (res.app.locals.broadcastMatchCreated) {
       res.app.locals.broadcastMatchCreated(event);
     }

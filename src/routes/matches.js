@@ -18,7 +18,7 @@ matchRouter.get("/", async (req, res) => {
   if (!parsed.success) {
     return res.status(400).json({
       error: "Invalid query",
-      details: JSON.stringify(parsed.error, null, 2),
+      details: parsed.error.issues,
     });
   }
 
@@ -35,16 +35,13 @@ matchRouter.get("/", async (req, res) => {
   } catch (e) {
     res.status(500).json({
       error: "Failed to fetch matches",
-      details: JSON.stringify(e, null, 2),
+      details: parsed.error.issues,
     });
   }
 });
 
 matchRouter.post("/", async (req, res) => {
   const parsed = createMatchSchema.safeParse(req.body);
-  const {
-    data: { startTime, endTime, homeScore, awayScore },
-  } = parsed;
 
   if (!parsed.success) {
     return res.status(400).json({
@@ -52,6 +49,10 @@ matchRouter.post("/", async (req, res) => {
       details: JSON.stringify(parsed.error, null, 2),
     });
   }
+
+  const {
+    data: { startTime, endTime, homeScore, awayScore },
+  } = parsed;
 
   try {
     // Drizzle ORM의 .returning() 메소드는 처리된 데이터를 항상 배열(Array) 형태로 반환
